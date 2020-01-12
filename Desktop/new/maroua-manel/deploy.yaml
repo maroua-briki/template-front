@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maroua-manel
+  labels:
+     app: maroua-manel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: maroua-manel
+  template:
+    metadata:
+      labels:
+         app: maroua-manel
+    spec:
+      containers:
+      - name: maroua-manel
+        image: registry.gitlab.com/maroua-briki/maroua-manel
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: regcred
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: maroua-manel
+spec:
+  type: LoadBalancer
+  selector:
+     app: maroua-manel
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
